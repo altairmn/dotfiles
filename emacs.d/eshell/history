@@ -1,0 +1,61 @@
+ls
+ls
+cd custom/
+ls
+rm setup-text.el\~
+rm setup-local.el~
+ls
+ls
+ls
+cd ..
+ls
+cd ..
+l
+ls
+cd Devel
+ls
+cd fuschia/
+ls
+cd app/
+l
+ls
+cd templates/
+ls
+cd ..
+ls
+ls
+cd ..
+ls
+ls
+cd ..
+lc
+ls
+cd ..
+ls
+cd IISc/
+ls
+cd pysketch/
+ls
+cd modules/
+ls
+cd alpha-shapes/
+ls
+cd ..
+ls
+cd caffe/
+ls
+cd ..
+ls
+cd contour-completion/n
+ls
+cd contour-completion/
+s
+ls
+cd ..
+ls
+cd gfhog/
+ls
+cd ..
+ls
+cd gfhog/
+ls

@@ -14,9 +14,21 @@
 
 (setq-default indent-tabs-mode t)
 (delete-selection-mode)
-(global-set-key (kbd "RET") 'newline-and-indent)
-(define-key org-mode-map (kbd "RET") 'newline-and-indent)
 
+;; newline and indent
+(global-set-key (kbd "RET") 'newline-and-indent)
+;(define-key 'org-mode-map (kbd "RET") 'newline-and-indent)   ; org needs special treatment
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Package: Org-Mode          ;;
+;;                            ;;
+;; GROUP: Editing -> Org-Mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun org-add-keymap()
+  (define-key org-mode-map (kbd "RET") 'newline-and-indent))
+
+(add-hook 'org-mode-hook 'org-add-keymap)
 
 
 
@@ -42,4 +54,4 @@
 (sp-use-paredit-bindings)
 
 
-(provide setup-editing)
+(provide 'setup-editing)

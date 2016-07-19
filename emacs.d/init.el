@@ -16,7 +16,7 @@
 (require 'setup-editing)
 (require 'setup-environment)
 (require 'setup-external)
-;;(require 'setup-faces-and-ui)
+(require 'setup-faces-and-ui)
 (require 'setup-files)
 (require 'setup-helm)
 (require 'setup-help)
@@ -24,5 +24,8 @@
 (require 'setup-text)
 (require 'setup-local)
 
+;; modalka
+(require 'modalka)
+(require 'setup-modalka)
 
 (mapc 'load (directory-files "~/.emacs.d/custom" t ".*\.el"))

@@ -68,3 +68,12 @@ ls
 cd ..
 ls
 ls
+ls
+cd .emacs.d/custom/
+ls
+ls
+ls
+cd ..
+ls
+cd ..
+ls

@@ -18,6 +18,7 @@
 (require 'setup-external)
 ;;(require 'setup-faces-and-ui)
 (require 'setup-files)
+(require 'setup-helm)
 (require 'setup-help)
 (require 'setup-programming)
 (require 'setup-text)

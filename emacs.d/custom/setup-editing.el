@@ -1,5 +1,3 @@
-(provide 'setup-editing)
-
 ;; GROUP Editing -> Editing Basics
 (setq global-mark-ring-max 5000
       mark-ring-max 5000
@@ -17,7 +15,7 @@
 (setq-default indent-tabs-mode t)
 (delete-selection-mode)
 (global-set-key (kbd "RET") 'newline-and-indent)
-
+(define-key org-mode-map (kbd "RET") 'newline-and-indent)
 
 
 
@@ -42,3 +40,6 @@
 (setq sp-autoskip-closing-pair 'always)
 (setq sp-hybrid-kill-entire-symbol nil)
 (sp-use-paredit-bindings)
+
+
+(provide setup-editing)

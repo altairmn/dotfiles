@@ -16,7 +16,7 @@ Plug 'junegunn/fzf.vim'             " fzf vim integration
 Plug 'scrooloose/nerdtree'
 Plug 'kshenoy/vim-signature'        " view marks
 Plug 'neomake/neomake'              " neomake: syntax checker and linter
-Plug 'ervandew/supertab'            " tab auto completion
+"Plug 'ervandew/supertab'            " tab auto completion
 Plug 'tpope/vim-commentary'         " easier commenting
 Plug 'junegunn/vim-easy-align'      " text alignment plugin
 Plug 'tommcdo/vim-exchange'         " easy text exchange for vim
@@ -31,7 +31,7 @@ if has('python') || has('python3')  " snippets
   Plug 'editorconfig/editorconfig-vim' " editor config for code consistency
   Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 endif
-Plug 'vim-scripts/DrawIt'         " Draw it
+Plug 'vim-scripts/DrawIt'           " Draw it
 
 
 " *SYNTAX PLUGINS*
@@ -119,16 +119,18 @@ set number
 " ===========================================================================
  
 " Softtabs, 2 spaces
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 " set shiftround
-set expandtab
+set noexpandtab
  
 " indent/format settings for different file types
 augroup filetype_specific
   au!
   au FileType vim  :setlocal ts=2 sts=0 sw=2 et fdm=marker fdl=0
+  au BufRead,BufNewFile *.h,*.c set filetype=c
+  au Filetype c  :setlocal ts=8 sts=8 sw=8 noexpandtab
 augroup END
  
 " last knwon cursor, auto markdown
@@ -442,7 +444,6 @@ noremap <Leader>so :so ~/.config/nvim/init.vim<CR>
  " call neomake#configure#automake('nw', 750)
  " }}}
  
- 
- 
- 
+" Temporary CSCOPE TEMP!!!
+nnoremap <Leader>cs :so ~/cscope/cscope_maps.vim<CR>
  " }}}

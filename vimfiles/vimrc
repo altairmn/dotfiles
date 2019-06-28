@@ -73,6 +73,7 @@ Plug 'lervag/vimtex'
 call plug#end()
 
 " }}}
+
 " ===========================================================================
 "  GENERAL SETTINGS {{{
 " ===========================================================================
@@ -96,6 +97,11 @@ set lazyredraw       " redraw the screen less often
 set splitbelow  " Open new split panes to right and bottom,
 set splitright  "  which feels more natural
 set diffopt+=vertical " Always use vertical diffs
+set autoread      " detect file changes and read
+
+if has('nvim') && g:os ==# 'Windows'
+  set cmdheight=2
+endif
  
  
 " }}}
@@ -295,9 +301,22 @@ let mapleader = " "     " space leader
  noremap <Leader>P "+P
  
  " quickly open and edit nvimrc
-noremap <Leader>vn :vsp $HOME\vimfiles\vimrc<CR>
-noremap <Leader>so :so $HOME\vimfiles\vimrc<CR>
- 
+if has('nvim')            " neovim
+  if g:os ==# 'Windows'
+    noremap <Leader>vn :vsp $HOME\dotfiles\vimfiles\vimrc<CR>
+    noremap <Leader>so :so $HOME\dotfiles\vimfiles\vimrc<CR>
+  else
+    noremap <Leader>vn :vsp $HOME\.config\nvim\init.vim<CR>
+    noremap <Leader>so :so $HOME\.config\nvim\init.vim<CR>
+  endif
+else                      " vim
+  noremap <Leader>vn :vsp $HOME\vimfiles\vimrc<CR>
+  noremap <Leader>so :so $HOME\vimfiles\vimrc<CR>
+endif
+
+nnoremap <Leader>ro :set readonly
+nnoremap <Leader>nro :set noreadonly
+
  " tab
  nnoremap <Leader>tc :tabclose<CR>
  nnoremap <Leader>tn :tabnew<CR>
@@ -485,3 +504,9 @@ let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsUsePythonVersion = 3
 
  " }}}
+
+" defx  {{{
+execute 'source ' . expand("<sfile>:h") . '\defx_settings.vim'
+
+" }}}
+

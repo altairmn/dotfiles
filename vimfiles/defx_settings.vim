@@ -54,11 +54,6 @@ function! s:defx_toggle_tree() abort
   return defx#do_action('drop')
 endfunction
 
-function! s:defx_change_dir() abort
-	if defx#is_directory()
-		return defx#do_action('multi', ['open', 'change_vim_cwd'])
-	endif
-endfunction
 
 nnoremap <silent><Leader>n :call <sid>defx_open({ 'split': v:true })<CR>
 nnoremap <silent><Leader>hf :call <sid>defx_open({ 'split': v:true, 'find_current_file': v:true })<CR>
@@ -115,6 +110,18 @@ function! s:defx_open_cur_file_dir() abort
   " figure out its directory
 endfunction
 
+function! s:defx_change_dir(...) abort
+	let l:dir_path = ''
+	if a:0 > 0 && a:1 ==# '..'
+		let l:dir_path = a:1
+	elseif defx#is_directory()
+		let l:dir_path = expand(get(defx#get_candidate(), 'action__path'))
+	endif
+	if l:dir_path !=# ''
+		exe 'cd ' . l:dir_path  
+		return defx#do_action('multi', [['cd', l:dir_path], 'change_vim_cwd'])
+	endif
+endfunction
 
 function! s:setup_defx_mappings()
   nnoremap <silent><buffer><expr> 'q
@@ -129,8 +136,10 @@ function! s:setup_defx_mappings()
         \ defx#do_action('open', 'vsplit')
   nnoremap <expr><buffer><silent> 't
         \ defx#do_action('open', 'tabnew')
+  nnoremap <expr><buffer><silent> 'n
+        \ defx#do_action('new_file')
   nnoremap <expr><buffer><silent> u
-		  \ defx#do_action('multi', [['cd', '..'], 'change_vim_cwd'])
+		\ <SID>defx_change_dir('..')
   nnoremap <expr><buffer><silent> c
 		\ <SID>defx_change_dir()
 endfunction

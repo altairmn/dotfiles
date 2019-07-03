@@ -17,9 +17,6 @@ endif
 
 call plug#begin()
 
-" *LATEX PlUGIN*
-Plug 'lervag/vimtex'
-
 " *PRIMARY PLUGINS*
 Plug 'ctrlpvim/ctrlp.vim'           " fuzzy file/buffer search
 if g:os ==? "Linux"
@@ -58,7 +55,8 @@ Plug 'itchyny/lightline.vim'        " better looking UI
 Plug 'gcmt/taboo.vim'               " rename tabs
 Plug 'ajmwagar/vim-deus'
 
-
+" *LATEX PlUGIN*
+Plug 'lervag/vimtex'
 
 call plug#end()
 
@@ -305,31 +303,31 @@ else                      " vim
   noremap <Leader>so :so $HOME\vimfiles\vimrc<CR>
 endif
 
-" nnoremap <Leader>ro :set readonly
-" nnoremap <Leader>nro :set noreadonly
+nnoremap <Leader>ro :set readonly
+nnoremap <Leader>nro :set noreadonly
 " 
-"  " tab
-"  nnoremap <Leader>tc :tabclose<CR>
-"  nnoremap <Leader>tn :tabnew<CR>
-"  nnoremap <Leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-"  
-"  nnoremap <Leader>tm :tabm
-"  
-"  nnoremap <Leader>; :tabm-1<CR>
-"  nnoremap <Leader>' :tabm+1<CR>
-"  
-"  
-"  " quickly open URL
-"  function! HandleURL()
-"    let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
-"    echo s:uri
-"    if s:uri != ""
-"      silent exec "!firefox '".s:uri."'"
-"    else
-"      echo "No URI found in line."
-"    endif
-"  endfunction
-"  noremap <leader>u :call HandleURL()<cr>
+" tab
+nnoremap <Leader>tc :tabclose<CR>
+nnoremap <Leader>tn :tabnew<CR>
+nnoremap <Leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+nnoremap <Leader>tm :tabm
+
+nnoremap <Leader>; :tabm-1<CR>
+nnoremap <Leader>' :tabm+1<CR>
+
+
+" quickly open URL
+function! HandleURL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+  echo s:uri
+  if s:uri != ""
+    silent exec "!firefox '".s:uri."'"
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+noremap <leader>u :call HandleURL()<cr>
  
  " }}}
  " ---------------------------------------------------------------------------

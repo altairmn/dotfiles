@@ -38,6 +38,7 @@ if has('python') || has('python3')  " snippets
   " Plug 'honza/vim-snippets'
 endif
 Plug 'vim-scripts/DrawIt'           " Draw it
+Plug 'vim-scripts/LargeFile'
 if has('nvim')
   Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -303,8 +304,8 @@ else                      " vim
   noremap <Leader>so :so $HOME\vimfiles\vimrc<CR>
 endif
 
-nnoremap <Leader>ro :set readonly
-nnoremap <Leader>nro :set noreadonly
+nnoremap <Leader>ro :set readonly<CR>
+nnoremap <Leader>nro :set noreadonly<CR>
 " 
 " tab
 nnoremap <Leader>tc :tabclose<CR>
@@ -328,6 +329,9 @@ function! HandleURL()
   endif
 endfunction
 noremap <leader>u :call HandleURL()<cr>
+
+" to command
+nnoremap <Leader>g :pwd<CR>
  
  " }}}
  " ---------------------------------------------------------------------------
@@ -462,5 +466,10 @@ let conceallevel = 1
 " " defx  {{{
 execute 'source ' . expand("<sfile>:h") . '\defx_settings.vim'
 
+" }}}
+
+
+" LargeFile  {{{
+  let g:LargeFile = 10
 " }}}
 

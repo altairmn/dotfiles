@@ -26,10 +26,14 @@
 "   remap <LocalLeader>/ to grep in all the files in the directory structure
 "   with the .gitignore or .ignore file in consideration
 
+" {{{ vimrc_defx augroup
+
+" RESET
 augroup vimrc_defx
 	autocmd!
 augroup END
 
+" INIT
 if v:vim_did_enter
   call s:setup_defx()
 else
@@ -43,9 +47,88 @@ augroup vimrc_defx
 augroup END
 
 
+" }}}
+
+" {{{ defx setup
+
 function! s:setup_defx()
-  nnoremap <Leader>df :Defx -split=vertical -direction=topleft -winwidth=40 -toggle<CR>
+  nnoremap <Leader>df :call <sid>defx_open({ 'split': v:true })<CR>
 endfunction
+
+function! s:setup_defx_mappings()
+  nnoremap <silent><buffer><expr> 'q
+  \ defx#do_action('multi', [['drop', 'split'], 'quit'])
+  nnoremap <expr><buffer><silent> o
+        \ <SID>defx_toggle_tree()
+  nnoremap <expr><buffer><silent> <CR>
+        \ <SID>defx_toggle_tree()
+  nnoremap <expr><buffer><silent> 's
+        \ defx#do_action('open', 'split')
+  nnoremap <expr><buffer><silent> 'v
+        \ defx#do_action('open', 'vsplit')
+  nnoremap <expr><buffer><silent> 't
+        \ defx#do_action('open', 'tabnew')
+  nnoremap <expr><buffer><silent> 'n
+        \ defx#do_action('new_file')
+  nnoremap <expr><buffer><silent> u
+		\ <SID>defx_change_dir('..')
+  nnoremap <expr><buffer><silent> c
+		\ <SID>defx_change_dir()
+endfunction
+
+" }}}
+
+" {{{ functions
+
+" defx_change_dir(...): takes 1 arg; specify the dir to change defx to
+" also changes working dir. argument: { dir: 'relative' or 'absolute' path}
+
+function! s:defx_change_dir(...) 
+	if a:0 > 0 && a:1 ==# '..'
+		let l:dir_path = a:1
+	elseif defx#is_directory()
+		let l:dir_path = expand(get(defx#get_candidate(), 'action__path'))
+	endif
+	if l:dir_path !=# ''
+		exe 'cd ' . l:dir_path  
+		return defx#do_action('multi', [['cd', l:dir_path], 'change_vim_cwd'])
+	endif
+endfunction
+
+function! s:defx_open(...)
+	"TODO set the current working directory to the opened dir
+  let l:opts = get(a:, 1, {})
+  let l:path = get(l:opts, 'dir', expand('%:p:h'))
+
+  if !isdirectory(l:path)
+    let l:path = getcwd()
+  endif
+
+  " if calling from a Defx buffer
+  if &filetype ==? 'defx'
+    "check if other buffers active in that tab, otherwise open a new file
+    if len(tabpagebuflist()) > 1
+	  execute("quit")
+      return
+    else
+      execute("wincmd vnew") 
+      execute("Defx -toggle")
+	  return
+    endif
+  endif
+
+  " if calling from a regular buffer
+  let l:args = "-direction=topleft -winwidth=60"
+
+  if has_key(l:opts, 'split')
+    let l:args .= ' -split=vertical' 
+  endif
+
+  call execute(printf('Defx -toggle %s %s', l:args, l:path))
+  call execute('wincmd p')
+  call execute(printf('cd %s', l:path))
+endfunction
+
 
 function! s:defx_toggle_tree() abort
   if defx#is_directory()
@@ -72,74 +155,6 @@ nnoremap <silent><Leader>hf :call <sid>defx_open({ 'split': v:true, 'find_curren
 " 
 "   return getcwd()
 " endfunction
-" 
-" function! s:defx_open(...) abort
-"   let l:opts = get(a:, 1, {})
-"   let l:path = get(l:opts, 'dir', s:get_project_root())
-" 
-"   if !isdirectory(l:path) || &filetype ==? 'defx'
-"     return
-"   endif
-" 
-"   let l:args = '-winwidth=40 -direction=topleft'
-" 
-"   if has_key(l:opts, 'split')
-"     let l:args .= ' -split=vertical'
-"   endif
-" 
-"   if has_key(l:opts, 'find_current_file')
-"     if &filetype ==? 'defx'
-"       return
-"     endif
-"     call execute(printf('Defx %s -search=%s %s', l:args, expand('%:p'), l:path))
-"   else
-"     call execute(printf('Defx -toggle %s %s', l:args, l:path))
-"     call execute('wincmd p')
-"   endif
-" 
-"   return execute("norm!\<C-w>=")
-" endfunction
 
-function! s:defx_open_cur_file_dir() abort
-  let l:dir_path = defexpand("%", ":h")
-  return defx#do_action('cd', l:dir_path)
-  " a map is called in a buffer
-  " get the current buffer's file from that
-  " only if it is a file
-  " one you get the file
-  " figure out its directory
-endfunction
 
-function! s:defx_change_dir(...) abort
-	let l:dir_path = ''
-	if a:0 > 0 && a:1 ==# '..'
-		let l:dir_path = a:1
-	elseif defx#is_directory()
-		let l:dir_path = expand(get(defx#get_candidate(), 'action__path'))
-	endif
-	if l:dir_path !=# ''
-		exe 'cd ' . l:dir_path  
-		return defx#do_action('multi', [['cd', l:dir_path], 'change_vim_cwd'])
-	endif
-endfunction
-
-function! s:setup_defx_mappings()
-  nnoremap <silent><buffer><expr> 'q
-  \ defx#do_action('multi', [['drop', 'split'], 'quit'])
-  nnoremap <expr><buffer><silent> o
-        \ <SID>defx_toggle_tree()
-  nnoremap <expr><buffer><silent> <CR>
-        \ <SID>defx_toggle_tree()
-  nnoremap <expr><buffer><silent> 's
-        \ defx#do_action('open', 'split')
-  nnoremap <expr><buffer><silent> 'v
-        \ defx#do_action('open', 'vsplit')
-  nnoremap <expr><buffer><silent> 't
-        \ defx#do_action('open', 'tabnew')
-  nnoremap <expr><buffer><silent> 'n
-        \ defx#do_action('new_file')
-  nnoremap <expr><buffer><silent> u
-		\ <SID>defx_change_dir('..')
-  nnoremap <expr><buffer><silent> c
-		\ <SID>defx_change_dir()
-endfunction
+" }}}
